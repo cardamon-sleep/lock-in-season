@@ -4,15 +4,12 @@
     <meta charset = "UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
     
-    <title>LOCK IN SEASON | Home</title>
+    <title>Home - Lock In Season</title>
     <link rel="icon" type="image/x-icon" href="/images/lis-favicon.png">
 
-    <link rel = "stylesheet" type = "text/css" href = "styles.css">
+    <link rel = "stylesheet" type = "text/css" href = "main-styles.css">
     
-    <!-- archivo -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap">
 </head>
 <body>
     <header>
@@ -22,15 +19,14 @@
     
     <nav id = "main-nav">
         <ul>
-            <a href = "index.html"><li>HOME</li></a>
-            <a href = "#"><li>SHOP</li></a>
-            <a href = "#"><li>ARTICLES</li></a>
-            <a href = "#"><li>CONTACT</li></a>
+            <a href = "index.php"><li>HOME</li></a>
+            <a href = "articles.php"><li>ARTICLES</li></a>
+            <a href = "about.html"><li>ABOUT</li></a>
+            <!-- <a href = "#"><li>CONTACT</li></a> -->
         </ul>
     </nav>
     
     <div class = "banner">
-        <!-- <img alt = "Man sitting on a bench in a city at night" class = "background" src = "images/bench-banner-2.jpg"> -->
         <!-- <img alt = "Hooded male standing at empty rail road tracks" class = "background" src = "images/standing-banner.jpg"> -->
         <img alt = "Man sitting in a train looking out the window" class = "background" src = "images/train-banner.jpg">
     </div>
