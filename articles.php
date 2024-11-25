@@ -14,6 +14,7 @@ $query = "SELECT * FROM blog_posts ORDER BY created_at DESC";
 $statement = $db->prepare($query);
 $statement->execute(); 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -49,24 +50,74 @@ $statement->execute();
     <main>
         <button><a href = "new-article.php">Create New Article</a></button>
         
-        <h2>All Articles</h2>
-        <section>
-            <?php while ($row = $statement->fetch()): ?>
-                <article>
-                    <h3><?= $row['title'] ?></h3>
 
-                    <?php
-                        // https://www.w3schools.com/php/func_date_date.asp
-                        // https://stackoverflow.com/questions/136782/convert-from-mysql-datetime-to-another-format-with-php
-                        $formatted_date = date('F j, Y, g:i a T', strtotime($row['created_at']));
-                    ?>
+
+        <?php 
+
+            // echo (boolean)(isset($_GET['id']));
+        ?>
+
+        <!-- if no article is selected -->
+        <?php if(!isset($_GET['id'])): ?>
+            <h2>All Articles</h2>
+            <section>
+                <?php while ($row = $statement->fetch()): ?>
+                    <article>
+                        <h3><a href = "articles.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
+
+
+                        <?php
+                            // https://www.w3schools.com/php/func_date_date.asp
+                            // https://stackoverflow.com/questions/136782/convert-from-mysql-datetime-to-another-format-with-php
+                            $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($row['created_at'])));
+                        ?>
+
+                        <h3><?= $formatted_date ?> - <a href = "edit-article.php?id=<?= $row['id']?>">edit</a></h3>
+
+                        <p><?= $row['content'] ?></p>
+                    </article>
+                <?php endwhile ?>
+            </section>
+        <?php else: ?>
+            <?php 
+                $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+                $row = $statement->fetch();
+                echo "<h1>" . $id . "</h1>";
+
+                if ($id) {
+                    // construct sql query
+                    $query = "SELECT * FROM blog_posts WHERE id = :id";
+            
+                    // cache query, allowing database to recognize it
+                    $statement = $db->prepare($query);
+            
+                    /*
+                        binds the id value of the query ^ to (esstentially,) the id of the selected blog post
+            
+                        PDO::PARAM_INT throws error if datatypes don't match, but it's been sanitized, and this 
+                        statement exists in this true block
+                    */
+                    $statement->bindValue(':id', $id, PDO::PARAM_INT);
+            
+                    // execute query, 
+                    $statement->execute();
                     
-                    <h3><?= $formatted_date ?> - <a href = "edit-article.php?id=<?= $row['id']?>">edit</a></h3>
+                    // sets fullPost to equal the retrieved blog post data with the selected blog post id
+                    $full_article = $statement->fetch(PDO::FETCH_ASSOC);
+                }
+            ?>
 
-                    <p><?= $row['content'] ?></p>
-                </article>
-            <?php endwhile ?>
-        </section>
+            <h2><?= $full_article['title'] ?></h2>
+            
+            <section>
+                <?php
+                    $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($full_article['created_at'])));
+                ?>
+                <h3><?= $formatted_date ?></h3>
+
+                <p><?= $full_article['content'] ?></p>
+            </section>
+        <?php endif ?>
     </main>
 
     

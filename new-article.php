@@ -140,7 +140,7 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content']))
                     <br>
                     <br>
 
-                    <input type = "submit" value = "Submit Blog" />
+                    <input type = "submit" value = "Publish" />
                 </fieldset>
             </form>
             
