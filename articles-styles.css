@@ -38,6 +38,10 @@
      color: inherit;
      text-decoration: inherit;
  }
+ main a {
+    color: blue;
+    text-decoration: default;
+ }
  span {
      color: #c60f0f;
      font-weight: bold;
@@ -51,6 +55,7 @@
      justify-content: center;
      background-color: black;
  }
+
  #main-header {
      color: white;
      margin: 0 10px 0 10px;
@@ -130,7 +135,7 @@
      color: white;
      font-size: 35px;
      padding: 10px;
-     margin: 0;
+     margin: 20px 0 0 0;
      border: 1.5px solid black;
  }
  main section {
@@ -159,7 +164,10 @@
      width: 50%;
      height: 1000px;
  }
- 
+ article
+ {
+    border: 2px solid rgb(129, 129, 129);
+ }
  
  footer {
      margin-top: 400px;

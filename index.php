@@ -34,7 +34,7 @@
     <div style = "height: 135px; width: 100%; background-color: black;"></div>
 
     <main>
-        <h2>THE PEOPLE WE'RE BECOMING</h2>
+        <h2>The People We're Becoming</h2>
         <section class = "about">
             <img alt = "Crowded train car" id = "about-img" src = "images/crowd.jpg">
             <p>
@@ -62,7 +62,7 @@
 
 
 
-        <h2>LOCK IN SEASON</h2>
+        <h2>Lock In Season</h2>
         <section class = "company">
             <p>
                 Established in 2024, <strong>LOCK IN SEASON</strong> strives to provide practical tools and information to help you

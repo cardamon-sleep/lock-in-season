@@ -1,3 +1,21 @@
+<?php
+
+/*******w******** 
+    
+    Name: Caleb Mustapha
+    Date: 2024-11-24
+    Description: CMS Lock In Season
+
+****************/
+
+require('connect.php');
+
+$query = "SELECT * FROM blog_posts ORDER BY id DESC LIMIT 5";
+$statement = $db->prepare($query);
+$statement->execute(); 
+
+?>
+
 <!DOCTYPE html>
 <html lang = "en">
 <head>
@@ -26,6 +44,31 @@
         </ul>
     </nav>
     
+    <br>
+
+    <main>
+        <button><a href = "post.php">Create New Article</a></button>
+        
+        <h2>All Articles</h2>
+        <section>
+            <?php while ($row = $statement->fetch()): ?>
+                <article>
+                    <h3><?= $row['title'] ?></h3>
+
+                    <?php
+                        // https://www.w3schools.com/php/func_date_date.asp
+                        // https://stackoverflow.com/questions/136782/convert-from-mysql-datetime-to-another-format-with-php
+                        $formatted_date = date('F j, Y, g:i a T', strtotime($row['created_at']));
+                    ?>
+                    
+                    <h3><?= $formatted_date ?> - <a href = "edit.php?id=<?= $row['id']?>">edit</a></h3>
+
+                    <p><?= $row['content'] ?></p>
+                </article>
+            <?php endwhile ?>
+        </section>
+    </main>
+
     
     <footer>
         <p>footer which has 400px top margin</p>
