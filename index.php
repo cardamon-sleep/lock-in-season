@@ -1,3 +1,21 @@
+<?php
+
+/*******w******** 
+    
+    Name: Caleb Mustapha
+    Date: 2024-11-24
+    Description: CMS Lock In Season
+
+****************/
+
+require('connect.php');
+
+$query = "SELECT * FROM blog_posts ORDER BY created_at DESC LIMIT 3";
+$statement = $db->prepare($query);
+$statement->execute(); 
+
+?>
+
 <!DOCTYPE html>
 <html lang = "en">
 <head>
@@ -68,6 +86,28 @@
                 Established in 2024, <strong>LOCK IN SEASON</strong> strives to provide practical tools and information to help you
                 build positive habits and healthy behaviours.
             </p>
+        </section>
+
+
+
+
+        <h2>Recent Articles</h2>
+        <section>
+            <?php while ($row = $statement->fetch()): ?>
+                <article>
+                    <h3><?= $row['title'] ?></h3>
+
+                    <?php
+                        // https://www.w3schools.com/php/func_date_date.asp
+                        // https://stackoverflow.com/questions/136782/convert-from-mysql-datetime-to-another-format-with-php
+                        $formatted_date = date('F j, Y, g:i a T', strtotime($row['created_at']));
+                    ?>
+                    
+                    <h3><?= $formatted_date ?> - <a href = "edit-article.php?id=<?= $row['id']?>">edit</a></h3>
+
+                    <p><?= $row['content'] ?></p>
+                </article>
+            <?php endwhile ?>
         </section>
     </main>
 

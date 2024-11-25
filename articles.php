@@ -10,7 +10,7 @@
 
 require('connect.php');
 
-$query = "SELECT * FROM blog_posts ORDER BY id DESC LIMIT 5";
+$query = "SELECT * FROM blog_posts ORDER BY created_at DESC";
 $statement = $db->prepare($query);
 $statement->execute(); 
 
@@ -47,7 +47,7 @@ $statement->execute();
     <br>
 
     <main>
-        <button><a href = "post.php">Create New Article</a></button>
+        <button><a href = "new-article.php">Create New Article</a></button>
         
         <h2>All Articles</h2>
         <section>
@@ -61,7 +61,7 @@ $statement->execute();
                         $formatted_date = date('F j, Y, g:i a T', strtotime($row['created_at']));
                     ?>
                     
-                    <h3><?= $formatted_date ?> - <a href = "edit.php?id=<?= $row['id']?>">edit</a></h3>
+                    <h3><?= $formatted_date ?> - <a href = "edit-article.php?id=<?= $row['id']?>">edit</a></h3>
 
                     <p><?= $row['content'] ?></p>
                 </article>

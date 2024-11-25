@@ -4,7 +4,7 @@
     
     Name: Caleb Mustapha
     Date: 2024-11-24
-    Description: Assigment 3 - Blogging Application
+    Description: CMS Lock In Season
 
 ****************/
 

@@ -3,8 +3,8 @@
 /*******w******** 
     
     Name: Caleb Mustapha
-    Date: 2024-09-29
-    Description: Assigment 3 - Blogging Application
+    Date: 2024-11-24
+    Description: CMS Lock In Season
 
 ****************/
 
