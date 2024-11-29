@@ -65,6 +65,27 @@ $statement->execute();
                     <article>
                         <h3><a href = "articles.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
 
+                        <?php
+                            $article_category = "";
+                            // grab category of the post
+                            // query categories table for posts category_id
+                            if(isset($row['category_id']))
+                            {
+                                $category_query = "SELECT * FROM categories WHERE id = {$row['category_id']}";
+                                $category_statement = $db->prepare($category_query);
+                                $category_statement->execute(); 
+
+                                $category_row = $category_statement->fetch();
+                                $article_category = "{$category_row['name']}";
+
+                                // echo '<pre>' . print_r($category_row) . '</pre>';
+                            }
+                            else 
+                            {
+                                $article_category = "uncategorized";
+                            }
+                            ?>
+                            <h4 style = "width: 200px; color: white; background-color: darkcyan"><?= $article_category ?></h4>
 
                         <?php
                             // https://www.w3schools.com/php/func_date_date.asp
