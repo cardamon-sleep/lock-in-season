@@ -21,7 +21,16 @@ if ($_POST && isset($_POST['id'])) {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    // $category = filter_var($_POST['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    echo '$category: ' . $category;
+
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    if (empty($category)) {
+        $category = null;
+    }
 
     if (isset($_POST['delete'])) {
         $query = "DELETE FROM blog_posts WHERE id = :id";
@@ -31,11 +40,12 @@ if ($_POST && isset($_POST['id'])) {
         header("Location: articles.php");
         exit;
     } elseif (!empty($title) && !empty($content)) {
-        $query = "UPDATE blog_posts SET title = :title, content = :content, author = :author WHERE id = :id";
+        $query = "UPDATE blog_posts SET title = :title, content = :content, author = :author, category_id = :category_id WHERE id = :id";
         $statement = $db->prepare($query);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
         $statement->bindValue(':author', $author);
+        $statement->bindValue(':category_id', $category);
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
         header("Location: articles.php");
@@ -47,7 +57,8 @@ if ($_POST && isset($_POST['id'])) {
             'id' => $id,
             'title' => $title,
             'content' => $content,
-            'author' => $author
+            'author' => $author,
+            'category_id' => $category
         ];
     }
 }
@@ -134,22 +145,27 @@ if (!$post) {
                     <br>
                     <br>
 
-                    <?php
-                    // $query = "SELECT * FROM categories";
-                    // $statement = $db->prepare($query);
-                    // $statement->execute(); 
-                    ?>
+
                     <label for="category">Category</label>
                     <select name="category" id="category">
                         <option value=""></option> <!-- null -->
+                        
                         <?php
+                        //utilizes previously ran blog_posts query to store category_id for this post before being flushed by the new query
+                        // $article_category = 
+
                         $query = "SELECT * FROM categories";
                         $statement = $db->prepare($query);
                         $statement->execute();
                         ?>
 
                         <?php while ($row = $statement->fetch()): ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <!-- if the id of the category matches the idea of this article's category the select for that option is set default-->
+                            <?php if($row['id'] == $post['category_id']): ?>
+                                <option value="<?= $row['id'] ?>" selected><?= $row['name'] ?></option>
+                            <?php else: ?>
+                                <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <?php endif ?>
                         <?php endwhile ?>
                     </select>
 
