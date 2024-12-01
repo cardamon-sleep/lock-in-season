@@ -148,7 +148,6 @@ if (!$post) {
 
                     <label for="category">Category</label>
                     <select name="category" id="category">
-                        <option value=""></option> <!-- null -->
                         
                         <?php
                         //utilizes previously ran blog_posts query to store category_id for this post before being flushed by the new query
@@ -162,9 +161,9 @@ if (!$post) {
                         <?php while ($row = $statement->fetch()): ?>
                             <!-- if the id of the category matches the idea of this article's category the select for that option is set default-->
                             <?php if($row['id'] == $post['category_id']): ?>
-                                <option value="<?= $row['id'] ?>" selected><?= $row['name'] ?></option>
+                                <option value="<?= $row['id'] ?>" selected><?= ($row['id'] == 1) ? '' : $row['name'] ?></option>
                             <?php else: ?>
-                                <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                                <option value="<?= $row['id'] ?>"><?= ($row['id'] == 1) ? '' : $row['name'] ?></option>
                             <?php endif ?>
                         <?php endwhile ?>
                     </select>

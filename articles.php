@@ -9,6 +9,7 @@
 ****************/
 
 require('connect.php');
+include('category-styles.php');
 
 $query = "SELECT * FROM blog_posts ORDER BY created_at DESC";
 $statement = $db->prepare($query);
@@ -27,7 +28,7 @@ $statement->execute();
     <link rel="icon" type="image/x-icon" href="/images/lis-favicon.png">
 
     <link rel = "stylesheet" type = "text/css" href = "articles-styles.css">
-    
+    <link rel = stylesheet type = "text/css" href = "category-styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap">
 </head>
 <body>
@@ -82,10 +83,11 @@ $statement->execute();
                             }
                             else 
                             {
-                                $article_category = "uncategorized";
+                                $article_category = "Uncategorized";
                             }
-                            ?>
-                            <h4 style = "width: 200px; color: white; background-color: darkcyan"><?= $article_category ?></h4>
+                        ?>
+
+                        <h4 class = "<?= $article_category ?>"><?= $article_category ?></h4>
 
                         <?php
                             // https://www.w3schools.com/php/func_date_date.asp

@@ -23,9 +23,9 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
     // if category and image are not set, set value to null, otherwise take the value
     // required, as without the query tries t oset the value for the cateogory column to blank, which isn't acceptable;
     // must be either null or an id value from the table
-    if (empty($category)) {
-        $category = null;
-    }
+    // if (empty($category)) {
+    //     $category = null;
+    // }
     if (empty($image)) {
         $image = null;
     }
@@ -93,12 +93,6 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
         <h2>New Article</h2>
         <section>
 
-            <!-- <form>
-                <label for = "new-category">New Category</label>
-                <input name = "new-category" id = "new-category"></input>
-                <input type = "submit">
-            </form> -->
-
             <form id="new-blog-post" action="new-article.php" method="post">
                 <fieldset>
                     <legend>New Article</legend>
@@ -123,7 +117,6 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
 
                     <label for="category">Category</label>
                     <select name="category" id="category">
-                        <option value=""></option>
                         <?php
                         $query = "SELECT * FROM categories";
                         $statement = $db->prepare($query);
@@ -131,7 +124,8 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
                         ?>
                         
                         <?php while ($row = $statement->fetch()): ?>
-                            <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                            <!-- conditional operation displays no text when the 1st category (Uncategorized) is the target -->
+                            <option value="<?= $row['id'] ?>"><?= ($row['id'] == 1) ? '' : $row['name'] ?></option>
                         <?php endwhile ?>
                     </select>
 
