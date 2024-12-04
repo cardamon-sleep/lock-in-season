@@ -1,0 +1,142 @@
+/* 
+ * Project 4: Website Development and Deployment
+ * Caleb Mustapha
+ * Created 8-07-24
+ */
+/*
+ * Helpful css resources consulted:
+    * https://stackoverflow.com/questions/16374068/stop-wide-image-from-producing-horizontal-scrollbar
+    *
+    *
+    *
+ */
+html,
+body,
+section,
+p,
+header,
+nav,
+footer,
+div,
+article,
+aside,
+ol,
+ul,
+li,
+h1,
+h6 {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: Archivo;
+    background-color: black;
+}
+
+
+
+
+
+
+/* HOME PAGE BANNER */
+.banner img {
+    display: block; /* removes slim gap that appears below the image due to it being an inline element */
+    width: 100%;
+    height: 400px;  
+    object-fit: cover; /* prevents image stretching when  window snapped to half screen */
+
+    /* makes img unselectable */
+    pointer-events: none;
+}
+
+
+
+
+/* MAIN CONTENT SECTION */
+main {
+    background-color: white;
+    /* width: 70%; */
+
+    padding: 30px;
+    margin: 0 auto 0 auto;  
+}
+section {
+    display: flex;
+    /* width: 70%; */
+
+    letter-spacing: 1px;
+    /* word-spacing: 2px; */
+    
+    /* margin: auto auto 30px auto; */
+    border: 1.5px solid black;
+    /* border-top: none; */
+    /* border-radius: 2px; */
+}
+section h2 {
+    
+    background-image: url('../img/article-img/crowded-train.jpg');
+    /* background-color: black; */
+
+    color: white;
+    font-size: 1.7em;
+    padding: 10px;
+    margin: 0;
+    border: 1.5px solid black;
+}
+section.about img {
+    max-width: 200px;
+}
+section p {
+    margin: 15px;
+}
+
+
+
+
+
+
+
+/* section h2 {
+    background-color: black;
+    color: white;
+    font-size: 1.7em;
+    padding: 10px;
+    margin: 0;
+    border: 1.5px solid black;
+}
+section.about img {
+    max-width: 40%;
+
+    display: block;
+    float: right;
+    margin: 20px;
+}
+section p {
+    margin: 15px;
+    
+} */
+
+
+
+
+
+
+#articles {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#articles div {
+    border: 2px solid lightblue;
+    width: 50%;
+    height: 1000px;
+}
+
+
+footer {
+    margin-top: 400px;
+    background-color: yellow;
+}
