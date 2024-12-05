@@ -65,6 +65,8 @@ main {
 }
 section {
     display: flex;
+    overflow: scroll;
+    /* flex-wrap: wrap; */
     /* width: 70%; */
 
     letter-spacing: 1px;

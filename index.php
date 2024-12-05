@@ -31,9 +31,19 @@ $statement->execute();
 </head>
 
 <body>
-    <!-- include function allows reused website content to be encapsulated -->
-    <?php include 'components/header.php' ?>
-    <?php include 'components/nav.php' ?>
+    <header>
+    <img alt="Lock in season logo" class="logo" src="img/logos/lis.png">
+    <h1 id="main-header">LOCK IN SEASON</h1>
+    </header>
+
+    <nav id="main-nav">
+    <ul>
+        <a href="index.php"><li>HOME</li></a>
+        <a href="articles.php"><li>ARTICLES</li></a>
+        <!-- <a href="#"><li>ABOUT</li></a> -->
+    </ul>
+    </nav>
+    
 
     <div class="banner">
         <img alt="Looking out the train window" src="img/banners/looking-out-train-window.jpg">

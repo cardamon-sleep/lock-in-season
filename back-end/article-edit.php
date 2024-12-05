@@ -21,10 +21,46 @@ if ($_POST && isset($_POST['id'])) {
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    // $category = filter_var($_POST['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $new_image_path = null;
+    $image_filename = null;
+    
+    $file_upload_path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'article-img\\';
+        // echo $file_upload_path;
 
-    echo '$category: ' . $category;
+    function file_is_an_image($temporary_path, $new_path) {
+        $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+        $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+        
+        $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+        $actual_mime_type        = getimagesize($temporary_path)['mime'];
+        
+        $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+        $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+
+        return $file_extension_is_valid && $mime_type_is_valid;
+    }
+    
+    // 1. IF NEW IMAGE UPLOADED SAVE UPLOADED IMAGE TO FILE SYSTEM
+    $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
+    
+    if($image_upload_detected) 
+    {
+        $image_filename = $_FILES['image']['name'];
+        $temporary_image_path = $_FILES['image']['tmp_name'];
+
+        // after moving the file, this path will also be used in the db to store path
+        $new_image_path = $file_upload_path . $image_filename;
+        
+        if(file_is_an_image($temporary_image_path, $new_image_path))
+        {
+            move_uploaded_file($temporary_image_path, $new_image_path);
+        }
+    }
+
+
+
+    // echo '$category: ' . $category;
 
     $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -39,14 +75,19 @@ if ($_POST && isset($_POST['id'])) {
         $statement->execute();
         header("Location: ../articles.php");
         exit;
-    } elseif (!empty($title) && !empty($content)) {
-        $query = "UPDATE articles SET title = :title, content = :content, author = :author, category_id = :category_id WHERE id = :id";
+    } elseif (!empty($title) && !empty($content) && !empty($_POST['author'])) {
+        // $query = "UPDATE articles SET title = :title, content = :content, author = :author, category_id = :category_id WHERE id = :id";
+        $query = "UPDATE articles SET title = :title, content = :content, author = :author, category_id = :category_id, image_path = :image, image_filename = :image_name WHERE id = :id";
         $statement = $db->prepare($query);
+
         $statement->bindValue(':title', $title);
         $statement->bindValue(':content', $content);
         $statement->bindValue(':author', $author);
         $statement->bindValue(':category_id', $category);
+        $statement->bindValue(':image', $new_image_path);
+        $statement->bindValue(':image_name', $image_filename);
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
+
         $statement->execute();
         header("Location: ../articles.php");
         exit;
@@ -58,7 +99,9 @@ if ($_POST && isset($_POST['id'])) {
             'title' => $title,
             'content' => $content,
             'author' => $author,
-            'category_id' => $category
+            'category_id' => $category,
+            'image_path'=> $new_image_path,
+            'image_name' => $image_filename
         ];
     }
 }
@@ -102,8 +145,18 @@ if (!$post) {
 </head>
 
 <body>
-    <?php include '../components/header.php' ?>
-    <?php include '../components/nav.php' ?>
+    <header>
+    <img alt="Lock in season logo" class="logo" src="../img/logos/lis.png">
+    <h1 id="main-header">LOCK IN SEASON</h1>
+    </header>
+
+    <nav id="main-nav">
+    <ul>
+        <a href="../index.php"><li>HOME</li></a>
+        <a href="../articles.php"><li>ARTICLES</li></a>
+        <!-- <a href="#"><li>ABOUT</li></a> -->
+    </ul>
+    </nav>
 
     <main>
         <h2>Edit Article</h2>
@@ -158,8 +211,18 @@ if (!$post) {
                     <br>
                     <br>
 
-                    <label for="image">Image</label>
+                    <label for="image">Replace image</label>
                     <input name="image" id="image" type="file">
+
+                    <?php if(isset($post['image_path'])): ?>
+                        <p>Remove image: <u><?= $post['image_filename'] ?></u>?</p>
+                        <label for = "no">No</label>
+                        <input name = "remove-image" id = "no" type = "radio" value = "no" checked>
+                        
+                        <label for = "yes">Yes</label>
+                        <input name = "remove-image" id = "no" type = "radio" value = "yes">
+                    <?php endif ?>
+
 
                     <br>
                     <br>

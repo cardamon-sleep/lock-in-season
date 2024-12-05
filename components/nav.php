@@ -16,12 +16,14 @@ __DIR__ returns the absolute path of the current directory
 // echo '<p style = "background-color: white;">' . PROJECT_FOLDER . '</p>';
 
 $project_folder = '/webd-2013/lock-in-season-hard-copy-no-github/';
+
+
 ?>
 
 <nav id="main-nav">
     <ul>
         <a href="<?= $project_folder ?>index.php"><li>HOME</li></a>
         <a href="<?= $project_folder ?>articles.php"><li>ARTICLES</li></a>
-        <a href="#"><li>ABOUT</li></a>
+        <!-- <a href="#"><li>ABOUT</li></a> -->
     </ul>
 </nav>

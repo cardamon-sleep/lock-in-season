@@ -12,19 +12,51 @@ require 'db-connect.php';
 require 'authenticate.php';
 
 
-if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
+if ($_POST && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['author'])) {
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $content = filter_var($_POST['content'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $author = filter_var($_POST['author'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $category = filter_var($_POST['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $image = filter_var($_POST['image'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $new_image_path = null;
+    $image_filename = null;
 
-    if (empty($image)) {
-        $image = null;
+    $file_upload_path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'article-img\\';
+    // echo $file_upload_path;
+
+    function file_is_an_image($temporary_path, $new_path) {
+        $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
+        $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
+        
+        $actual_file_extension   = pathinfo($new_path, PATHINFO_EXTENSION);
+        $actual_mime_type        = getimagesize($temporary_path)['mime'];
+        
+        $file_extension_is_valid = in_array($actual_file_extension, $allowed_file_extensions);
+        $mime_type_is_valid      = in_array($actual_mime_type, $allowed_mime_types);
+
+        return $file_extension_is_valid && $mime_type_is_valid;
+    }
+    
+    // 1. SAVE UPLOADED IMAGE TO FILE SYSTEM
+    $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
+    // echo $image_upload_detected;
+    
+    if($image_upload_detected) 
+    {
+        $image_filename = $_FILES['image']['name'];
+        $temporary_image_path = $_FILES['image']['tmp_name'];
+
+        // after moving the file, this path will also be used in the db to store path
+        $new_image_path = $file_upload_path . $image_filename;
+        
+        if(file_is_an_image($temporary_image_path, $new_image_path))
+        {
+            move_uploaded_file($temporary_image_path, $new_image_path);
+        }
     }
 
+    // 3. BUILD FULL ARTICLE QUERY
     //  Build the parameterized SQL query and bind to the above sanitized values. ":" denotes a placeholder
-    $query = "INSERT INTO articles (title, content, author, category_id, image_id) VALUES (:title, :content, :author, :category, :image)";
+    $query = "INSERT INTO articles (title, content, author, category_id, image_path, image_filename) VALUES (:title, :content, :author, :category, :image, :image_name)";
     $statement = $db->prepare($query); // prepare it tries to cache information to use in the next step
 
     //  Bind values to the parameters (pass sanitized data to placeholder)
@@ -32,11 +64,12 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
     $statement->bindValue(':content', $content);
     $statement->bindValue(':author', $author);
     $statement->bindValue(':category', $category);
-    $statement->bindValue(':image', $image);
+    $statement->bindValue(':image', $new_image_path);
+    $statement->bindValue(':image_name', $image_filename);
 
     //  execute() will check for possible SQL injection and remove if necessary
     $statement->execute();
-
+    
     // Redirect after update.
     header("Location: ../articles.php");
     exit;
@@ -61,14 +94,24 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content'])) {
 </head>
 
 <body>
-    <?php include '../components/header.php' ?>
-    <?php include '../components/nav.php' ?>
+    <header>
+    <img alt="Lock in season logo" class="logo" src="../img/logos/lis.png">
+    <h1 id="main-header">LOCK IN SEASON</h1>
+    </header>
+
+    <nav id="main-nav">
+    <ul>
+        <a href="../index.php"><li>HOME</li></a>
+        <a href="../articles.php"><li>ARTICLES</li></a>
+        <!-- <a href="#"><li>ABOUT</li></a> -->
+    </ul>
+    </nav>
 
     <main>
         <h2>New Article</h2>
         <section>
 
-            <form id="new-blog-post" action="article-new.php" method="post">
+            <form id="new-blog-post" action="article-new.php" method="post" enctype = "multipart/form-data">
                 <fieldset>
                     <legend>New Article</legend>
 

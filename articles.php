@@ -36,8 +36,18 @@ $statement->execute();
 </head>
 
 <body>
-    <?php include 'components/header.php' ?>
-    <?php include 'components/nav.php' ?>
+    <header>
+    <img alt="Lock in season logo" class="logo" src="img/logos/lis.png">
+    <h1 id="main-header">LOCK IN SEASON</h1>
+    </header>
+
+    <nav id="main-nav">
+    <ul>
+        <a href="index.php"><li>HOME</li></a>
+        <a href="articles.php"><li>ARTICLES</li></a>
+        <!-- <a href="#"><li>ABOUT</li></a> -->
+    </ul>
+    </nav>
 
     <br>
 
@@ -95,7 +105,7 @@ $statement->execute();
             <?php
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
             $row = $statement->fetch();
-            echo "<h1>" . $id . "</h1>";
+            // echo "<h1>" . $id . "</h1>";
 
             if ($id) {
                 // construct sql query
@@ -129,6 +139,10 @@ $statement->execute();
                 <h3><?= $formatted_date ?></h3>
 
                 <p><?= $full_article['content'] ?></p>
+
+                <?php if(isset($full_article['image_path'])): ?>
+                    <img alt = "Image of <?= $full_article['title'] ?>" src = "img/article-img/<?= $full_article['image_filename'] ?>" width = "300px">
+                <?php endif ?>
             </section>
         <?php endif ?>
     </main>
