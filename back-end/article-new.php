@@ -20,8 +20,13 @@ if ($_POST && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_P
     $new_image_path = null;
     $image_filename = null;
 
+    // localhost config:
     $file_upload_path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'article-img\\';
-    // echo $file_upload_path;
+    // live site config:
+    // $file_upload_path = $_SERVER['DOCUMENT_ROOT'] . '/img/article-img/';
+
+    // echo "<script>alert({$file_upload_path})</script>";
+
 
     function file_is_an_image($temporary_path, $new_path) {
         $allowed_mime_types      = ['image/gif', 'image/jpeg', 'image/png'];
