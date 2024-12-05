@@ -93,8 +93,8 @@ $statement->execute();
 
 
 
-        <!-- <section>
-            <h2>Recent Articles</h2>
+        
+            <h2><u>Recent Articles</u></h2>
             <?php while ($row = $statement->fetch()): ?>
                 <article>
                     <h3><?= $row['title'] ?></h3>
@@ -105,12 +105,18 @@ $statement->execute();
                     $formatted_date = date('F j, Y, g:i a T', strtotime($row['created_at']));
                     ?>
 
-                    <h3><?= $formatted_date ?> - <a href="edit-article.php?id=<?= $row['id'] ?>">edit</a></h3>
+                    <h3><?= $formatted_date ?></h3>
 
-                    <p><?= $row['content'] ?></p>
+                    <?php if(strlen($row['content']) > 200): ?>                    
+                        <p> <?= htmlspecialchars(substr($row['content'], 0, 200)) ?>...</p>
+                        <a href="articles.php?id=<?= $row['id'] ?>"> Read more </a>
+                    <?php else: ?>
+                        <p> <?= htmlspecialchars($row['content']) ?> </p>
+                    <?php endif ?>
+                    
                 </article>
             <?php endwhile ?>
-        </section> -->
+        
            
     </main>
 
