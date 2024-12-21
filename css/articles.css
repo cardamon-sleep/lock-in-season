@@ -24,7 +24,9 @@ ol,
 ul,
 li,
 h1,
-h6 {
+h2,
+h3,
+h4 {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -43,29 +45,16 @@ span {
   font-weight: bold;
 }
 
-
-
-/* HOME PAGE BANNER */
-.banner .background {
-  display: block; /* removes slim gap that appears below the image due to it being an inline element */
-  width: 100%;
-  height: 400px;
-  object-fit: cover; /* prevents image stretching when  window snapped to half screen */
-
-  pointer-events: none;
-}
-
 /* MAIN CONTENT SECTION */
 main {
   background-color: white;
-  /* width: 70%; */
+  width: 70%;
 
   padding: 30px;
   margin: 0 auto 0 auto;
 }
 main h2 {
-  background-color: black;
-  color: white;
+  color: black;
   font-size: 35px;
   padding: 10px;
   margin: 20px 0 0 0;
@@ -81,24 +70,55 @@ main section {
   border: 1.5px solid black;
   border-top: none;
 }
-main section.about img {
-  width: 500px;
-  display: block;
-  float: right;
-  margin: 0px 0px 20px 20px;
+
+/* ARTICLES SECTION */
+section {
+  background-color: rgb(177, 177, 177);
 }
-#articles {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-#articles div {
-  border: 2px solid lightblue;
-  width: 50%;
-  height: 1000px;
-}
-article {
+
+/* EACH ARTICLE */
+article:not(:first-child) {
+  background-color: white;
   border: 2px solid rgb(129, 129, 129);
+  margin: 20px 0 20px 0;
+  padding: 20px;
+
+  height: 250px;
+}
+article h3 {
+  color: black;
+}
+article h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: 0.3s;
+}
+article h3 a:hover {
+  text-decoration-color: black;
+}
+article .info {
+  font-style: italic;
+  /* color: #4c4c4c; */
+
+  margin: 10px 0 10px 0;
+}
+article .content {
+  color: #4c4c4c;
+}
+article:not(:first-child) img {
+  float: right;
+  width: 300px;
+
+  /* with % the parent element must have an explicitly defined height */
+  height: 100%;
+  object-fit: cover;
+  padding-left: 20px;
+}
+
+/* FIRST ARTICLE */
+article:first-child img {
+  width: 100%;
 }
 
 footer {

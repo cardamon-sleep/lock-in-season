@@ -37,16 +37,20 @@ $statement->execute();
 
 <body>
     <header>
-    <img alt="Lock in season logo" class="logo" src="img/logos/lis.png">
-    <h1 id="main-header">LOCK IN SEASON</h1>
+        <img alt="Lock in season logo" class="logo" src="img/logos/lis.png">
+        <h1 id="main-header">LOCK IN SEASON</h1>
     </header>
 
     <nav id="main-nav">
-    <ul>
-        <a href="index.php"><li>HOME</li></a>
-        <a href="articles.php"><li>ARTICLES</li></a>
-        <!-- <a href="#"><li>ABOUT</li></a> -->
-    </ul>
+        <ul>
+            <a href="index.php">
+                <li>HOME</li>
+            </a>
+            <a href="articles.php">
+                <li>ARTICLES</li>
+            </a>
+            <!-- <a href="#"><li>ABOUT</li></a> -->
+        </ul>
     </nav>
 
     <br>
@@ -65,9 +69,22 @@ $statement->execute();
         <?php if (!isset($_GET['id'])): ?>
             <h2>All Articles</h2>
             <section>
+
+                <!-- USE FOR OR WHILE WITH COUNT VARIABLE TO DISPLAY FIRST ARTICLE DIFFERENTLY  -->
+                <!-- Should i display a preview like on the first page, or just a list of article titles like on theminimalists?
+                the latter does look good... -->
+
+                <!-- andwer: do the former: this projcet is to demonstrate skills, so add the complexity -->
+
+
+
                 <?php while ($row = $statement->fetch()): ?>
                     <article>
-                        <h3><a href="articles.php?id=<?= $row['id'] ?>"><?= htmlspecialchars($row['title']) ?></a></h3>
+
+                        <?php if (isset($row['image_filename'])): ?>
+                            <img src="img/article-img/<?= $row['image_filename'] ?>">
+                        <?php endif ?>
+
 
                         <?php
                         $article_category = "";
@@ -88,16 +105,33 @@ $statement->execute();
                         ?>
 
                         <h4 class="<?= $article_category ?>"><?= $article_category ?></h4>
+                        <h3><a href="articles.php?id=<?= $row['id'] ?>"><?= $row['title'] ?></a>
+                        </h3>
 
                         <?php
                         // https://www.w3schools.com/php/func_date_date.asp
                         // https://stackoverflow.com/questions/136782/convert-from-mysql-datetime-to-another-format-with-php
-                        $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($row['created_at'])));
+                        $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($row['created_at'], ENT_COMPAT)));
                         ?>
 
-                        <h3><?= $formatted_date ?> - <a href="back-end/article-edit.php?id=<?= $row['id'] ?>">edit</a></h3>
+                        <div class="info">
+                            <p>By <?= $row['author'] ?></p>
+                            <p>Created <?= $formatted_date ?> - <a
+                                    href="back-end/article-edit.php?id=<?= $row['id'] ?>">edit</a></p>
+                        </div>
 
-                        <p><?= $row['content'] ?></p>
+                        <!-- 
+                        htmlspecialchars function is oft used for securty purposes, but has been removed as it 
+                        inhibited the clarity of already sanitized content, and upon testing proved unnecessary 
+                        as html entities such as '' and <> are rendered merely as text in the browser 
+                        -->
+                        <?php if (strlen($row['content']) > 200): ?>
+                            <p class="content"><?= substr($row['content'], 0, 200) ?>...</p>
+                        <?php else: ?>
+                            <p class="content"><?= $row['content'] ?></p>
+                        <?php endif ?>
+
+                        <a href="articles.php?id=<?= $row['id'] ?>"></a>
                     </article>
                 <?php endwhile ?>
             </section>
@@ -106,7 +140,7 @@ $statement->execute();
             $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
             $row = $statement->fetch();
             // echo "<h1>" . $id . "</h1>";
-
+        
             if ($id) {
                 // construct sql query
                 $query = "SELECT * FROM articles WHERE id = :id";
@@ -134,14 +168,15 @@ $statement->execute();
 
             <section>
                 <?php
-                $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($full_article['created_at'])));
+                $formatted_date = date('F j, Y, g:i a T', strtotime(htmlspecialchars($full_article['created_at'], ENT_COMPAT)));
                 ?>
                 <h3><?= $formatted_date ?></h3>
 
                 <p><?= $full_article['content'] ?></p>
 
-                <?php if(isset($full_article['image_path'])): ?>
-                    <img alt = "Image of <?= $full_article['title'] ?>" src = "img/article-img/<?= $full_article['image_filename'] ?>" width = "300px">
+                <?php if (isset($full_article['image_path'])): ?>
+                    <img alt="Image of <?= $full_article['title'] ?>"
+                        src="img/article-img/<?= $full_article['image_filename'] ?>" width="300px">
                 <?php endif ?>
             </section>
         <?php endif ?>

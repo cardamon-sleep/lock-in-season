@@ -11,12 +11,12 @@ $text_color = "white";
 
 while ($row = $statement->fetch()) {
     $css .= "\n.{$row['name']} {
-        \n\tbackground-color: {$row['background_color']};
-        \n\tcolor: {$row['text_color']};\n
-        \n\twidth: fit-content;
-        \n\tpadding: 10px;
-        \n\tborder-radius: 5px;
-    }";
+    background-color: {$row['background_color']};
+    color: {$row['text_color']};
+    width: fit-content;
+    padding: 0 2px 0 2px;
+    margin: 0 0 10px 0;
+}";
 }
 file_put_contents("css/category.css", $css);
 

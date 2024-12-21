@@ -1,53 +1,29 @@
 
 .Uncategorized {
-        
-	background-color: #999999;
-        
-	color: #4f4f4f;
-
-        
-	width: fit-content;
-        
-	padding: 10px;
-        
-	border-radius: 5px;
-    }
+    background-color: #999999;
+    color: #4f4f4f;
+    width: fit-content;
+    padding: 0 2px 0 2px;
+    margin: 0 0 10px 0;
+}
 .Mindset {
-        
-	background-color: #795A90;
-        
-	color: #FFFFFF;
-
-        
-	width: fit-content;
-        
-	padding: 10px;
-        
-	border-radius: 5px;
-    }
+    background-color: #795A90;
+    color: #FFFFFF;
+    width: fit-content;
+    padding: 0 2px 0 2px;
+    margin: 0 0 10px 0;
+}
 .Practice {
-        
-	background-color: #1DA51D;
-        
-	color: #FFFFFF;
-
-        
-	width: fit-content;
-        
-	padding: 10px;
-        
-	border-radius: 5px;
-    }
+    background-color: #1DA51D;
+    color: #FFFFFF;
+    width: fit-content;
+    padding: 0 2px 0 2px;
+    margin: 0 0 10px 0;
+}
 .Reflection {
-        
-	background-color: #0b5380;
-        
-	color: #FFFFFF;
-
-        
-	width: fit-content;
-        
-	padding: 10px;
-        
-	border-radius: 5px;
-    }
+    background-color: #0b5380;
+    color: #FFFFFF;
+    width: fit-content;
+    padding: 0 2px 0 2px;
+    margin: 0 0 10px 0;
+}
